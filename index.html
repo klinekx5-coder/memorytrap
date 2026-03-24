@@ -362,6 +362,7 @@
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('experiment')">ЭКСПЕРИМЕНТ</button>
         <button class="tab-btn" onclick="switchTab('numbers')">ТРЕНАЖЕР ЦИФР</button>
+		<button class="tab-btn" onclick="switchTab('multiply')">ТАБЛИЦА УМНОЖЕНИЯ</button>
     </div>
     
     <!-- Вкладка: ЭКСПЕРИМЕНТ (работает как раньше) -->
@@ -428,7 +429,34 @@
                 <div>ПОДРЯД</div>
             </div>
         </div>
-        
+		
+<!-- Вкладка: ТАБЛИЦА УМНОЖЕНИЯ -->
+<div id="multiplyTab" class="tab-content">
+    <h2>ТАБЛИЦА УМНОЖЕНИЯ</h2>
+    <p>Тренируйте устный счет. Ответьте на 5 вопросов подряд!</p>
+    
+    <div class="trainer-stats">
+        <div>
+            <div class="stat-value" id="multScore">0</div>
+            <div>ПРАВИЛЬНО</div>
+        </div>
+        <div>
+            <div class="stat-value" id="multStreak">0</div>
+            <div>ПОДРЯД</div>
+        </div>
+        <div>
+            <div class="stat-value" id="multTotal">0</div>
+            <div>ВСЕГО</div>
+        </div>
+    </div>
+    
+    <div id="multGameArea">
+        <div style="text-align: center;">
+            <button onclick="startMultiplyGame()">НАЧАТЬ</button>
+        </div>
+    </div>
+</div>
+		
         <div id="gameArea">
             <div style="text-align: center;">
                 <button onclick="startNumberGame()">НАЧАТЬ</button>
@@ -456,9 +484,12 @@
         if (tab === 'experiment') {
             document.querySelector('.tab-btn:first-child').classList.add('active');
             document.getElementById('experimentTab').classList.add('active');
-        } else {
-            document.querySelector('.tab-btn:last-child').classList.add('active');
+        } else if (tab === 'numbers') {
+            document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
             document.getElementById('numbersTab').classList.add('active');
+        } else if (tab === 'multiply') {
+            document.querySelector('.tab-btn:nth-child(3)').classList.add('active');
+            document.getElementById('multiplyTab').classList.add('active');
         }
     }
     
@@ -698,6 +729,117 @@
         const video = document.getElementById('testVideo');
         if (video) video.addEventListener('ended', onVideoEnded);
     });
+
+    // ========== ТАБЛИЦА УМНОЖЕНИЯ ==========
+    let multCurrentQuestion = null;
+    let multScore = 0;
+    let multStreak = 0;
+    let multTotal = 0;
+    let multActive = false;
+    
+    function startMultiplyGame() {
+        multActive = true;
+        multScore = 0;
+        multStreak = 0;
+        multTotal = 0;
+        updateMultiplyStats();
+        nextMultiplyQuestion();
+    }
+    
+    function nextMultiplyQuestion() {
+        if (!multActive) return;
+        
+        // Генер случайные числа от 2 до 9
+        const num1 = Math.floor(Math.random() * 8) + 2; // 2-9
+        const num2 = Math.floor(Math.random() * 8) + 2; // 2-9
+        const correctAnswer = num1 * num2;
+        
+        multCurrentQuestion = {
+            num1: num1,
+            num2: num2,
+            answer: correctAnswer
+        };
+        
+        let html = `
+            <div class="number-display" style="padding: 40px;">
+                <div style="font-size: 3em; font-weight: bold; color: #2ecc71;">
+                    ${num1} × ${num2} = ?
+                </div>
+            </div>
+            <div style="text-align: center; margin: 20px 0;">
+                <input type="number" id="multAnswer" 
+                       style="background: rgba(0,0,0,0.6); border: 2px solid #2ecc71; border-radius: 15px; 
+                              padding: 15px; font-size: 1.5em; width: 150px; text-align: center; color: white;"
+                       placeholder="?" 
+                       onkeypress="if(event.key==='Enter') checkMultiplyAnswer()">
+            </div>
+            <div style="text-align: center;">
+                <button onclick="checkMultiplyAnswer()">ПРОВЕРИТЬ</button>
+            </div>
+        `;
+        
+        document.getElementById('multGameArea').innerHTML = html;
+        
+        setTimeout(() => {
+            const input = document.getElementById('multAnswer');
+            if (input) input.focus();
+        }, 100);
+    }
+    
+    function checkMultiplyAnswer() {
+        if (!multActive) return;
+        
+        const input = document.getElementById('multAnswer');
+        const userAnswer = parseInt(input.value);
+        
+        if (isNaN(userAnswer)) {
+            alert("Введите число");
+            return;
+        }
+        
+        multTotal++;
+        
+        if (userAnswer === multCurrentQuestion.answer) {
+            multScore++;
+            multStreak++;
+            
+            let html = `
+                <div class="success">
+                    <h3>ПРАВИЛЬНО!</h3>
+                    <p>${multCurrentQuestion.num1} × ${multCurrentQuestion.num2} = ${multCurrentQuestion.answer}</p>
+                    <p>Серия: ${multStreak} подряд</p>
+                </div>
+                <div style="text-align: center;">
+                    <button onclick="nextMultiplyQuestion()">СЛЕДУЮЩИЙ ПРИМЕР</button>
+                </div>
+            `;
+            document.getElementById('multGameArea').innerHTML = html;
+        } else {
+            multStreak = 0;
+            
+            let html = `
+                <div class="warning">
+                    <h3>НЕПРАВИЛЬНО!</h3>
+                    <p>${multCurrentQuestion.num1} × ${multCurrentQuestion.num2} = ${multCurrentQuestion.answer}</p>
+                    <p>Ващ ответ: ${userAnswer}</p>
+                    <p>Правильных ответов: ${multScore} из ${multTotal}</p>
+                </div>
+                <div style="text-align: center;">
+                    <button onclick="startMultiplyGame()">НАЧАТЬ ЗАНОВО</button>
+                </div>
+            `;
+            document.getElementById('multGameArea').innerHTML = html;
+            multActive = false;
+        }
+        
+        updateMultiplyStats();
+    }
+    
+    function updateMultiplyStats() {
+        document.getElementById('multScore').textContent = multScore;
+        document.getElementById('multStreak').textContent = multStreak;
+        document.getElementById('multTotal').textContent = multTotal;
+    }
 </script>
 </body>
 </html>
