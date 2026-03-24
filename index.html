@@ -21,7 +21,6 @@
             position: relative;
         }
         
-        /* Эффект свечения по краям */
         body::before {
             content: '';
             position: fixed;
@@ -87,35 +86,11 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        h1 {
-            font-size: 2.2em;
-            margin-bottom: 20px;
-            color: #ffffff;
-            text-align: center;
-            letter-spacing: -0.5px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-        }
+        h1 { font-size: 2.2em; margin-bottom: 20px; color: #ffffff; text-align: center; }
+        h2 { color: #ffffff; margin-bottom: 20px; font-size: 1.7em; }
+        h3 { color: #2ecc71; margin-bottom: 15px; font-size: 1.3em; }
+        p { color: #ffffff; line-height: 1.6; margin-bottom: 20px; font-size: 1.05em; }
         
-        h2 {
-            color: #ffffff;
-            margin-bottom: 20px;
-            font-size: 1.7em;
-        }
-        
-        h3 {
-            color: #2ecc71;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-        }
-        
-        p {
-            color: #ffffff;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            font-size: 1.05em;
-        }
-        
-        /* Кнопки */
         button {
             background: linear-gradient(135deg, #2ecc71, #1f8a4c);
             color: #ffffff;
@@ -129,18 +104,15 @@
             font-weight: bold;
             box-shadow: 0 6px 0 #0f4d2d;
             transform: translateY(-2px);
-            letter-spacing: 0.5px;
         }
         
         button:active {
             transform: translateY(4px);
             box-shadow: 0 2px 0 #0f4d2d;
-            transition: all 0.05s ease;
         }
         
         button:hover {
             background: linear-gradient(135deg, #3be07f, #27ae60);
-            cursor: pointer;
         }
         
         .question-block {
@@ -149,7 +121,6 @@
             padding: 22px;
             margin-bottom: 20px;
             border: 1px solid rgba(46, 204, 113, 0.25);
-            transition: all 0.2s;
         }
         
         .question-text {
@@ -173,20 +144,13 @@
         .option:hover {
             background: rgba(46, 204, 113, 0.25);
             transform: translateX(5px);
-            border-color: rgba(46, 204, 113, 0.6);
-            color: #ffffff;
         }
         
         .option.selected {
             background: linear-gradient(135deg, #2ecc71, #1f8a4c);
-            color: #ffffff;
-            border-color: transparent;
-            box-shadow: 0 2px 10px rgba(46, 204, 113, 0.3);
         }
         
-        .hidden {
-            display: none;
-        }
+        .hidden { display: none; }
         
         .result-card {
             background: rgba(20, 25, 22, 0.8);
@@ -195,10 +159,6 @@
             margin: 20px 0;
             text-align: center;
             border: 1px solid rgba(46, 204, 113, 0.4);
-        }
-        
-        .result-card p {
-            color: #ffffff;
         }
         
         .score {
@@ -216,10 +176,6 @@
             border-radius: 16px;
         }
         
-        .warning h3, .warning p {
-            color: #ffffff;
-        }
-        
         .success {
             background: rgba(46, 204, 113, 0.12);
             border-left: 4px solid #2ecc71;
@@ -228,16 +184,11 @@
             border-radius: 16px;
         }
         
-        .success h3, .success p {
-            color: #ffffff;
-        }
-        
         video {
             width: 100%;
             border-radius: 20px;
             margin: 20px 0;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(46, 204, 113, 0.3);
         }
         
         hr {
@@ -247,7 +198,6 @@
             margin: 20px 0;
         }
         
-        /* Тренажер цифр */
         .number-display {
             background: rgba(0, 0, 0, 0.6);
             border-radius: 28px;
@@ -255,7 +205,6 @@
             text-align: center;
             margin: 20px 0;
             border: 1px solid rgba(46, 204, 113, 0.4);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
         }
         
         .big-number {
@@ -263,7 +212,6 @@
             font-weight: bold;
             color: #2ecc71;
             letter-spacing: 12px;
-            text-shadow: 0 0 8px rgba(46, 204, 113, 0.5);
         }
         
         .digit-input {
@@ -284,15 +232,12 @@
             border-radius: 16px;
             color: #ffffff;
             font-weight: bold;
-            transition: all 0.2s;
         }
         
         .digit-input input:focus {
             outline: none;
             border-color: #2ecc71;
             box-shadow: 0 0 12px rgba(46, 204, 113, 0.4);
-            background: rgba(0, 0, 0, 0.8);
-            color: #ffffff;
         }
         
         .trainer-stats {
@@ -305,54 +250,13 @@
             border: 1px solid rgba(46, 204, 113, 0.25);
         }
         
-        .trainer-stats div {
-            text-align: center;
-        }
-        
         .trainer-stats .stat-value {
             font-size: 1.8em;
             font-weight: bold;
             color: #2ecc71;
         }
         
-        .trainer-stats div:first-child .stat-value,
-        .trainer-stats div:nth-child(2) .stat-value,
-        .trainer-stats div:last-child .stat-value {
-            color: #2ecc71;
-        }
-        
-        .trainer-stats div:first-child,
-        .trainer-stats div:nth-child(2),
-        .trainer-stats div:last-child {
-            color: #ffffff;
-        }
-        
-        ::selection {
-            background: #2ecc71;
-            color: #000;
-        }
-        
-        /* Дополнительные элементы */
-        .hint, .video-message {
-            color: #ffffff;
-        }
-        
-        #videoMessage p {
-            color: #2ecc71;
-        }
-        
-        .result-card p:last-child {
-            color: #ffffff;
-        }
-        
-        /* Текст в разборе ответов */
-        #resultsContainer div div {
-            color: #ffffff;
-        }
-        
-        #resultsContainer div div span {
-            color: #ffffff;
-        }
+        #videoMessage p { color: #2ecc71; }
     </style>
 </head>
 <body>
@@ -362,10 +266,10 @@
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('experiment')">ЭКСПЕРИМЕНТ</button>
         <button class="tab-btn" onclick="switchTab('numbers')">ТРЕНАЖЕР ЦИФР</button>
-		<button class="tab-btn" onclick="switchTab('multiply')">ТАБЛИЦА УМНОЖЕНИЯ</button>
+        <button class="tab-btn" onclick="switchTab('multiply')">ТАБЛИЦА УМНОЖЕНИЯ</button>
     </div>
     
-    <!-- Вкладка: ЭКСПЕРИМЕНТ (работает как раньше) -->
+    <!-- Вкладка: ЭКСПЕРИМЕНТ -->
     <div id="experimentTab" class="tab-content active">
         <div id="expWelcome">
             <h1>MEMORY TRAP</h1>
@@ -378,25 +282,18 @@
                 <h3>Что же такое ложные воспоминания?</h3>
                 <p>Ложные воспоминания, также известные как фантомные, — это несуществующие воспоминания, которые человек ошибочно считает реальными. Люди могут создавать и запоминать события или детали, которых, на самом деле, не происходило.</p>
             </div>
-    <!-- ИНФОРМАЦИЯ О ПРОЕКТЕ ВНИЗУ -->
-    <div style="margin-top: 35px; padding-top: 20px; border-top: 1px solid rgba(46, 204, 113, 0.3); text-align: center;">
-        <p style="font-size: 0.9em; color: rgba(255,255,255,0.7); margin-bottom: 5px;">
-            Индивидуальный проект
-        </p>
-        <p style="font-size: 0.9em; color: rgba(255,255,255,0.7);">
-            Выполнила: Турьева Кристина | МАОУ СОШ №1 ! 10А
-        </p>
-    </div>
-</div>
+            <div style="margin-top: 35px; padding-top: 20px; border-top: 1px solid rgba(46, 204, 113, 0.3); text-align: center;">
+                <p style="font-size: 0.9em; color: rgba(255,255,255,0.7);">Индивидуальный проект | Выполнила: Турьева Кристина | МАОУ СОШ №1, 10А</p>
+            </div>
         </div>
-		
+        
         <div id="expVideo" class="hidden">
             <h2>ПОСМОТРИТЕ ВИДЕО ВНИМАТЕЛЬНО</h2>
             <div id="videoContainer">
                 <video id="testVideo" controls>
                     <source src="video.mp4" type="video/mp4">
                 </video>
-                <p>Далее ответьте на вопросы. . .</p>
+                <p>Далее ответьте на вопросы...</p>
             </div>
             <div id="videoMessage"></div>
             <div id="questionsContainer" style="display: none;"></div>
@@ -416,50 +313,32 @@
         <p>Запомните последовательность цифр и повторите ее в правильном порядке.</p>
         
         <div class="trainer-stats">
-            <div>
-                <div class="stat-value" id="currentLevel">1</div>
-                <div>УРОВЕНЬ</div>
-            </div>
-            <div>
-                <div class="stat-value" id="currentScore">0</div>
-                <div>ПРАВИЛЬНО</div>
-            </div>
-            <div>
-                <div class="stat-value" id="currentStreak">0</div>
-                <div>ПОДРЯД</div>
-            </div>
+            <div><div class="stat-value" id="currentLevel">1</div><div>УРОВЕНЬ</div></div>
+            <div><div class="stat-value" id="currentScore">0</div><div>ПРАВИЛЬНО</div></div>
+            <div><div class="stat-value" id="currentStreak">0</div><div>ПОДРЯД</div></div>
         </div>
-		
-<!-- Вкладка: ТАБЛИЦА УМНОЖЕНИЯ -->
-<div id="multiplyTab" class="tab-content">
-    <h2>ТАБЛИЦА УМНОЖЕНИЯ</h2>
-    <p>Тренируйте устный счет. Ответьте на 5 вопросов подряд!</p>
-    
-    <div class="trainer-stats">
-        <div>
-            <div class="stat-value" id="multScore">0</div>
-            <div>ПРАВИЛЬНО</div>
-        </div>
-        <div>
-            <div class="stat-value" id="multStreak">0</div>
-            <div>ПОДРЯД</div>
-        </div>
-        <div>
-            <div class="stat-value" id="multTotal">0</div>
-            <div>ВСЕГО</div>
-        </div>
-    </div>
-    
-    <div id="multGameArea">
-        <div style="text-align: center;">
-            <button onclick="startMultiplyGame()">НАЧАТЬ</button>
-        </div>
-    </div>
-</div>
-		
+        
         <div id="gameArea">
             <div style="text-align: center;">
                 <button onclick="startNumberGame()">НАЧАТЬ</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Вкладка: ТАБЛИЦА УМНОЖЕНИЯ -->
+    <div id="multiplyTab" class="tab-content">
+        <h2>✖ТАБЛИЦА УМНОЖЕНИЯ</h2>
+        <p>Тренируйте устный счет. Отвечайте на примеры!</p>
+        
+        <div class="trainer-stats">
+            <div><div class="stat-value" id="multScore">0</div><div>ПРАВИЛЬНО</div></div>
+            <div><div class="stat-value" id="multStreak">0</div><div>ПОДРЯД</div></div>
+            <div><div class="stat-value" id="multTotal">0</div><div>ВСЕГО</div></div>
+        </div>
+        
+        <div id="multGameArea">
+            <div style="text-align: center;">
+                <button onclick="startMultiplyGame()">НАЧАТЬ</button>
             </div>
         </div>
     </div>
@@ -547,7 +426,7 @@
         
         let resultsHtml = `<h2>РЕЗУЛЬТАТЫ:</h2><div class="result-card"><div class="score">${correct} / ${questionsData.length}</div><p>правильных ответов</p></div>`;
         if (hasFalseMemory) {
-            resultsHtml += `<div class="warning"><h3>ЛОЖНОЕ ВОСПОМИНАНИЕ!</h3><p>Вспомнили ли вы о том, чего не было?.</p></div>`;
+            resultsHtml += `<div class="warning"><h3>ЛОЖНОЕ ВОСПОМИНАНИЕ!</h3><p>Вспомнили ли вы о том, чего не было?</p></div>`;
         } else {
             resultsHtml += `<div class="success"><h3>ВЫ НЕ ПОДДАЛИСЬ!</h3><p>Большинство ответов верны.</p></div>`;
         }
@@ -557,7 +436,8 @@
             const userAnswer = questionsData[i].options[userSelections[i]];
             resultsHtml += `<div><strong>${i+1}.</strong> ${userAnswer} ${isCorrect ? '✅' : '❌'}</div>`;
         }
-		
+        resultsHtml += `</div>`;
+        
         document.getElementById('resultsContainer').innerHTML = resultsHtml;
         document.getElementById('expVideo').classList.add('hidden');
         document.getElementById('expResult').classList.remove('hidden');
@@ -584,7 +464,6 @@
     let currentLevel = 1;
     let totalScore = 0;
     let currentStreak = 0;
-    let timer = null;
     
     function startNumberGame() {
         gameActive = true;
@@ -596,23 +475,15 @@
     }
     
     function nextRound() {
-        // Генерируем случайную последовательность цифр
         currentNumber = [];
         for (let i = 0; i < currentLevel; i++) {
             currentNumber.push(Math.floor(Math.random() * 10));
         }
-        
-        // Показываем цифры
         showNumberSequence();
     }
     
     function showNumberSequence() {
-        let html = `
-            <div class="number-display">
-                <div class="big-number" id="displayNumber"></div>
-            </div>
-            <p style="text-align: center;">Запомните последовательность...</p>
-        `;
+        let html = `<div class="number-display"><div class="big-number" id="displayNumber"></div></div><p style="text-align: center;">Запомните последовательность...</p>`;
         document.getElementById('gameArea').innerHTML = html;
         
         let index = 0;
@@ -628,18 +499,11 @@
                 setTimeout(askUserInput, 300);
             }
         }
-        
         showNextDigit();
     }
     
     function askUserInput() {
-        let html = `
-            <p style="text-align: center;">Введите цифры в том же порядке:</p>
-            <div class="digit-input" id="digitInputs"></div>
-            <div style="text-align: center;">
-                <button onclick="checkAnswer()">ПРОВЕРИТЬ</button>
-            </div>
-        `;
+        let html = `<p style="text-align: center;">Введите цифры в том же порядке:</p><div class="digit-input" id="digitInputs"></div><div style="text-align: center;"><button onclick="checkAnswer()">ПРОВЕРИТЬ</button></div>`;
         document.getElementById('gameArea').innerHTML = html;
         
         const inputsDiv = document.getElementById('digitInputs');
@@ -647,73 +511,35 @@
             const input = document.createElement('input');
             input.type = 'text';
             input.maxLength = 1;
-            input.style.width = '60px';
-            input.style.height = '60px';
-            input.style.textAlign = 'center';
-            input.style.fontSize = '1.5em';
-            input.style.background = 'rgba(255,255,255,0.2)';
-            input.style.border = '2px solid rgba(46, 204, 113, 0.5)';
-            input.style.borderRadius = '10px';
-            input.style.color = 'white';
-            input.style.fontWeight = 'bold';
+            input.placeholder = '?';
             input.onkeyup = function(e) {
-                if (e.target.value.length === 1) {
-                    if (i + 1 < currentLevel) {
-                        inputsDiv.children[i + 1].focus();
-                    }
+                if (e.target.value.length === 1 && i + 1 < currentLevel) {
+                    inputsDiv.children[i + 1].focus();
                 }
             };
             inputsDiv.appendChild(input);
         }
-        
-        // Автофокус на первое поле
-        setTimeout(() => {
-            if (inputsDiv.children[0]) inputsDiv.children[0].focus();
-        }, 100);
+        setTimeout(() => { if (inputsDiv.children[0]) inputsDiv.children[0].focus(); }, 100);
     }
     
     function checkAnswer() {
         const inputs = document.querySelectorAll('#digitInputs input');
-        let userAnswer = [];
         let correct = true;
-        
         for (let i = 0; i < inputs.length; i++) {
             const val = parseInt(inputs[i].value);
-            if (isNaN(val) || val !== currentNumber[i]) {
-                correct = false;
-                break;
-            }
+            if (isNaN(val) || val !== currentNumber[i]) { correct = false; break; }
         }
         
         if (correct) {
             totalScore++;
             currentStreak++;
-            let html = `
-                <div class="success">
-                    <h3>ПРАВИЛЬНО!</h3>
-                    <p>Вы запомнили ${currentLevel} цифр!</p>
-                </div>
-                <div style="text-align: center;">
-                    <button onclick="nextRound()">СЛЕДУЮЩИЙ УРОВЕНЬ</button>
-                </div>
-            `;
-            document.getElementById('gameArea').innerHTML = html;
+            document.getElementById('gameArea').innerHTML = `<div class="success"><h3>ПРАВИЛЬНО!</h3><p>Вы запомнили ${currentLevel} цифр!</p></div><div style="text-align: center;"><button onclick="nextRound()">СЛЕДУЮЩИЙ УРОВЕНЬ</button></div>`;
             currentLevel++;
             updateStats();
         } else {
             currentStreak = 0;
             let correctAnswer = currentNumber.join(' ');
-            let html = `
-                <div class="warning">
-                    <h3>НЕПРАВИЛЬНО!</h3>
-                    <p>Правильная последовательность: <strong>${correctAnswer}</strong></p>
-                    <p>Всего ${totalScore} очков.</p>
-                </div>
-                <div style="text-align: center;">
-                    <button onclick="startNumberGame()">НАЧАТЬ ЗАНОВО</button>
-                </div>
-            `;
-            document.getElementById('gameArea').innerHTML = html;
+            document.getElementById('gameArea').innerHTML = `<div class="warning"><h3>НЕПРАВИЛЬНО!</h3><p>Правильная последовательность: <strong>${correctAnswer}</strong></p><p>Всего ${totalScore} очков.</p></div><div style="text-align: center;"><button onclick="startNumberGame()">НАЧАТЬ ЗАНОВО</button></div>`;
             updateStats();
             gameActive = false;
         }
@@ -725,11 +551,6 @@
         document.getElementById('currentStreak').textContent = currentStreak;
     }
     
-    document.addEventListener('DOMContentLoaded', function() {
-        const video = document.getElementById('testVideo');
-        if (video) video.addEventListener('ended', onVideoEnded);
-    });
-
     // ========== ТАБЛИЦА УМНОЖЕНИЯ ==========
     let multCurrentQuestion = null;
     let multScore = 0;
@@ -748,90 +569,40 @@
     
     function nextMultiplyQuestion() {
         if (!multActive) return;
-        
-        // Генер случайные числа от 2 до 9
-        const num1 = Math.floor(Math.random() * 8) + 2; // 2-9
-        const num2 = Math.floor(Math.random() * 8) + 2; // 2-9
+        const num1 = Math.floor(Math.random() * 8) + 2;
+        const num2 = Math.floor(Math.random() * 8) + 2;
         const correctAnswer = num1 * num2;
-        
-        multCurrentQuestion = {
-            num1: num1,
-            num2: num2,
-            answer: correctAnswer
-        };
+        multCurrentQuestion = { num1, num2, answer: correctAnswer };
         
         let html = `
             <div class="number-display" style="padding: 40px;">
-                <div style="font-size: 3em; font-weight: bold; color: #2ecc71;">
-                    ${num1} × ${num2} = ?
-                </div>
+                <div style="font-size: 3em; font-weight: bold; color: #2ecc71;">${num1} × ${num2} = ?</div>
             </div>
             <div style="text-align: center; margin: 20px 0;">
-                <input type="number" id="multAnswer" 
-                       style="background: rgba(0,0,0,0.6); border: 2px solid #2ecc71; border-radius: 15px; 
-                              padding: 15px; font-size: 1.5em; width: 150px; text-align: center; color: white;"
-                       placeholder="?" 
-                       onkeypress="if(event.key==='Enter') checkMultiplyAnswer()">
+                <input type="number" id="multAnswer" style="background: rgba(0,0,0,0.6); border: 2px solid #2ecc71; border-radius: 15px; padding: 15px; font-size: 1.5em; width: 150px; text-align: center; color: white;" placeholder="?" onkeypress="if(event.key==='Enter') checkMultiplyAnswer()">
             </div>
-            <div style="text-align: center;">
-                <button onclick="checkMultiplyAnswer()">ПРОВЕРИТЬ</button>
-            </div>
+            <div style="text-align: center;"><button onclick="checkMultiplyAnswer()">ПРОВЕРИТЬ</button></div>
         `;
-        
         document.getElementById('multGameArea').innerHTML = html;
-        
-        setTimeout(() => {
-            const input = document.getElementById('multAnswer');
-            if (input) input.focus();
-        }, 100);
+        setTimeout(() => { const input = document.getElementById('multAnswer'); if (input) input.focus(); }, 100);
     }
     
     function checkMultiplyAnswer() {
         if (!multActive) return;
-        
         const input = document.getElementById('multAnswer');
         const userAnswer = parseInt(input.value);
-        
-        if (isNaN(userAnswer)) {
-            alert("Введите число");
-            return;
-        }
-        
+        if (isNaN(userAnswer)) { alert("Введите число"); return; }
         multTotal++;
         
         if (userAnswer === multCurrentQuestion.answer) {
             multScore++;
             multStreak++;
-            
-            let html = `
-                <div class="success">
-                    <h3>ПРАВИЛЬНО!</h3>
-                    <p>${multCurrentQuestion.num1} × ${multCurrentQuestion.num2} = ${multCurrentQuestion.answer}</p>
-                    <p>Серия: ${multStreak} подряд</p>
-                </div>
-                <div style="text-align: center;">
-                    <button onclick="nextMultiplyQuestion()">СЛЕДУЮЩИЙ ПРИМЕР</button>
-                </div>
-            `;
-            document.getElementById('multGameArea').innerHTML = html;
+            document.getElementById('multGameArea').innerHTML = `<div class="success"><h3>ПРАВИЛЬНО!</h3><p>${multCurrentQuestion.num1} × ${multCurrentQuestion.num2} = ${multCurrentQuestion.answer}</p><p>Счет: ${multStreak} подряд</p></div><div style="text-align: center;"><button onclick="nextMultiplyQuestion()">СЛЕДУЮЩИЙ ПРИМЕР</button></div>`;
         } else {
             multStreak = 0;
-            
-            let html = `
-                <div class="warning">
-                    <h3>НЕПРАВИЛЬНО!</h3>
-                    <p>${multCurrentQuestion.num1} × ${multCurrentQuestion.num2} = ${multCurrentQuestion.answer}</p>
-                    <p>Ващ ответ: ${userAnswer}</p>
-                    <p>Правильных ответов: ${multScore} из ${multTotal}</p>
-                </div>
-                <div style="text-align: center;">
-                    <button onclick="startMultiplyGame()">НАЧАТЬ ЗАНОВО</button>
-                </div>
-            `;
-            document.getElementById('multGameArea').innerHTML = html;
+            document.getElementById('multGameArea').innerHTML = `<div class="warning"><h3>НЕПРАВИЛЬНО!</h3><p>${multCurrentQuestion.num1} × ${multCurrentQuestion.num2} = ${multCurrentQuestion.answer}</p><p>Ваш ответ: ${userAnswer}</p><p>Правильных ответов: ${multScore} из ${multTotal}</p></div><div style="text-align: center;"><button onclick="startMultiplyGame()">НАЧАТЬ ЗАНОВО</button></div>`;
             multActive = false;
         }
-        
         updateMultiplyStats();
     }
     
@@ -840,6 +611,11 @@
         document.getElementById('multStreak').textContent = multStreak;
         document.getElementById('multTotal').textContent = multTotal;
     }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const video = document.getElementById('testVideo');
+        if (video) video.addEventListener('ended', onVideoEnded);
+    });
 </script>
 </body>
 </html>
