@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Memory Trap - Ложные воспоминания</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at 20% 30%, #0a0f0e, #030605);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+        
+        /* Эффект свечения по краям */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 70% 40%, rgba(46, 204, 113, 0.08), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .screen {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 32px;
+            padding: 35px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(46, 204, 113, 0.2);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 35px;
+            border-bottom: 1px solid rgba(46, 204, 113, 0.3);
+            padding-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            background: rgba(30, 30, 35, 0.8);
+            box-shadow: none;
+            margin: 0;
+            padding: 10px 24px;
+            font-size: 1em;
+            border-radius: 40px;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            color: #ffffff;
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(135deg, #2ecc71, #1f8a4c);
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+            color: #ffffff;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            color: #ffffff;
+            text-align: center;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        h2 {
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-size: 1.7em;
+        }
+        
+        h3 {
+            color: #2ecc71;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        p {
+            color: #ffffff;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 1.05em;
+        }
+        
+        /* Кнопки */
+        button {
+            background: linear-gradient(135deg, #2ecc71, #1f8a4c);
+            color: #ffffff;
+            border: none;
+            padding: 12px 32px;
+            font-size: 1.1em;
+            border-radius: 60px;
+            cursor: pointer;
+            margin: 15px 0;
+            transition: all 0.1s cubic-bezier(0.2, 0.9, 0.6, 1.1);
+            font-weight: bold;
+            box-shadow: 0 6px 0 #0f4d2d;
+            transform: translateY(-2px);
+            letter-spacing: 0.5px;
+        }
+        
+        button:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #0f4d2d;
+            transition: all 0.05s ease;
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #3be07f, #27ae60);
+            cursor: pointer;
+        }
+        
+        .question-block {
+            background: rgba(20, 25, 22, 0.7);
+            border-radius: 20px;
+            padding: 22px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(46, 204, 113, 0.25);
+            transition: all 0.2s;
+        }
+        
+        .question-text {
+            color: #ffffff;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 18px;
+        }
+        
+        .option {
+            background: rgba(30, 35, 32, 0.8);
+            padding: 12px 20px;
+            margin: 10px 0;
+            border-radius: 14px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: 1px solid rgba(46, 204, 113, 0.2);
+        }
+        
+        .option:hover {
+            background: rgba(46, 204, 113, 0.25);
+            transform: translateX(5px);
+            border-color: rgba(46, 204, 113, 0.6);
+            color: #ffffff;
+        }
+        
+        .option.selected {
+            background: linear-gradient(135deg, #2ecc71, #1f8a4c);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 2px 10px rgba(46, 204, 113, 0.3);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .result-card {
+            background: rgba(20, 25, 22, 0.8);
+            border-radius: 24px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid rgba(46, 204, 113, 0.4);
+        }
+        
+        .result-card p {
+            color: #ffffff;
+        }
+        
+        .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #2ecc71;
+            text-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+        }
+        
+        .warning {
+            background: rgba(255, 80, 80, 0.12);
+            border-left: 4px solid #ff5252;
+            padding: 18px;
+            margin: 18px 0;
+            border-radius: 16px;
+        }
+        
+        .warning h3, .warning p {
+            color: #ffffff;
+        }
+        
+        .success {
+            background: rgba(46, 204, 113, 0.12);
+            border-left: 4px solid #2ecc71;
+            padding: 18px;
+            margin: 18px 0;
+            border-radius: 16px;
+        }
+        
+        .success h3, .success p {
+            color: #ffffff;
+        }
+        
+        video {
+            width: 100%;
+            border-radius: 20px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+        
+        hr {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #2ecc71, transparent);
+            margin: 20px 0;
+        }
+        
+        /* Тренажер цифр */
+        .number-display {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 28px;
+            padding: 50px;
+            text-align: center;
+            margin: 20px 0;
+            border: 1px solid rgba(46, 204, 113, 0.4);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        .big-number {
+            font-size: 4.5em;
+            font-weight: bold;
+            color: #2ecc71;
+            letter-spacing: 12px;
+            text-shadow: 0 0 8px rgba(46, 204, 113, 0.5);
+        }
+        
+        .digit-input {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+        
+        .digit-input input {
+            width: 65px;
+            height: 65px;
+            text-align: center;
+            font-size: 1.6em;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(46, 204, 113, 0.5);
+            border-radius: 16px;
+            color: #ffffff;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        
+        .digit-input input:focus {
+            outline: none;
+            border-color: #2ecc71;
+            box-shadow: 0 0 12px rgba(46, 204, 113, 0.4);
+            background: rgba(0, 0, 0, 0.8);
+            color: #ffffff;
+        }
+        
+        .trainer-stats {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 18px;
+            border-radius: 24px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(46, 204, 113, 0.25);
+        }
+        
+        .trainer-stats div {
+            text-align: center;
+        }
+        
+        .trainer-stats .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2ecc71;
+        }
+        
+        .trainer-stats div:first-child .stat-value,
+        .trainer-stats div:nth-child(2) .stat-value,
+        .trainer-stats div:last-child .stat-value {
+            color: #2ecc71;
+        }
+        
+        .trainer-stats div:first-child,
+        .trainer-stats div:nth-child(2),
+        .trainer-stats div:last-child {
+            color: #ffffff;
+        }
+        
+        ::selection {
+            background: #2ecc71;
+            color: #000;
+        }
+        
+        /* Дополнительные элементы */
+        .hint, .video-message {
+            color: #ffffff;
+        }
+        
+        #videoMessage p {
+            color: #2ecc71;
+        }
+        
+        .result-card p:last-child {
+            color: #ffffff;
+        }
+        
+        /* Текст в разборе ответов */
+        #resultsContainer div div {
+            color: #ffffff;
+        }
+        
+        #resultsContainer div div span {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="screen">
+    <!-- Вкладки -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('experiment')">ЭКСПЕРИМЕНТ</button>
+        <button class="tab-btn" onclick="switchTab('numbers')">ТРЕНАЖЕР ЦИФР</button>
+    </div>
+    
+    <!-- Вкладка: ЭКСПЕРИМЕНТ (работает как раньше) -->
+    <div id="experimentTab" class="tab-content active">
+        <div id="expWelcome">
+            <h1>MEMORY TRAP</h1>
+            <p>Тренажер поможет сосредоточиться и укрепить вашу память.</p>
+            <p>Либо пройдите эксперимент и узнайте, как легко создать ложное воспоминание.</p>
+            <div style="text-align: center;">
+                <button onclick="startExperiment()">НАЧАТЬ ЭКСПЕРИМЕНТ</button>
+            </div>
+            <div style="background: rgba(255,255,255,0.05); border-radius: 15px; padding: 20px; margin-top: 30px;">
+                <h3>Что же такое ложные воспоминания?</h3>
+                <p>Ложные воспоминания, также известные как фантомные, — это несуществующие воспоминания, которые человек ошибочно считает реальными. Люди могут создавать и запоминать события или детали, которых, на самом деле, не происходило.</p>
+            </div>
+    <!-- ИНФОРМАЦИЯ О ПРОЕКТЕ ВНИЗУ -->
+    <div style="margin-top: 35px; padding-top: 20px; border-top: 1px solid rgba(46, 204, 113, 0.3); text-align: center;">
+        <p style="font-size: 0.9em; color: rgba(255,255,255,0.7); margin-bottom: 5px;">
+            Индивидуальный проект
+        </p>
+        <p style="font-size: 0.9em; color: rgba(255,255,255,0.7);">
+            Выполнила: Турьева Кристина | МАОУ СОШ №1 ! 10А
+        </p>
+    </div>
+</div>
+        </div>
+		
+        <div id="expVideo" class="hidden">
+            <h2>ПОСМОТРИТЕ ВИДЕО ВНИМАТЕЛЬНО</h2>
+            <div id="videoContainer">
+                <video id="testVideo" controls>
+                    <source src="video.mp4" type="video/mp4">
+                </video>
+                <p>Далее ответьте на вопросы. . .</p>
+            </div>
+            <div id="videoMessage"></div>
+            <div id="questionsContainer" style="display: none;"></div>
+        </div>
+        
+        <div id="expResult" class="hidden">
+            <div id="resultsContainer"></div>
+            <div style="text-align: center;">
+                <button onclick="restartExperiment()">ПРОЙТИ СНОВА</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Вкладка: ТРЕНАЖЕР ЦИФР -->
+    <div id="numbersTab" class="tab-content">
+        <h2>ТРЕНАЖЕР ПАМЯТИ</h2>
+        <p>Запомните последовательность цифр и повторите ее в правильном порядке.</p>
+        
+        <div class="trainer-stats">
+            <div>
+                <div class="stat-value" id="currentLevel">1</div>
+                <div>УРОВЕНЬ</div>
+            </div>
+            <div>
+                <div class="stat-value" id="currentScore">0</div>
+                <div>ПРАВИЛЬНО</div>
+            </div>
+            <div>
+                <div class="stat-value" id="currentStreak">0</div>
+                <div>ПОДРЯД</div>
+            </div>
+        </div>
+        
+        <div id="gameArea">
+            <div style="text-align: center;">
+                <button onclick="startNumberGame()">НАЧАТЬ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ========== ЭКСПЕРИМЕНТ ==========
+    const questionsData = [
+        { text: "Сзади был человек. Какого цвета на нем рубашка?", options: ["Белая", "Черная", "Бежевая", "Серая"], correct: 0 },
+        { text: "Какого цвета был платок у женщины слева?", options: ["Белый", "Синий", "Черный", "Платка не было"], correct: 4 },
+        { text: "Сколько стаканов было на столе?", options: ["Один", "Два", "Три", "Нисколько"], correct: 4 },
+        { text: "Был ли в видео телефон?", options: ["Да, был", "Нет, не был", "Не заметил"], correct: 1 }
+    ];
+    
+    let userSelections = [];
+    let videoWatched = false;
+    
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
+        if (tab === 'experiment') {
+            document.querySelector('.tab-btn:first-child').classList.add('active');
+            document.getElementById('experimentTab').classList.add('active');
+        } else {
+            document.querySelector('.tab-btn:last-child').classList.add('active');
+            document.getElementById('numbersTab').classList.add('active');
+        }
+    }
+    
+    function startExperiment() {
+        document.getElementById('expWelcome').classList.add('hidden');
+        document.getElementById('expVideo').classList.remove('hidden');
+        document.getElementById('expResult').classList.add('hidden');
+        videoWatched = false;
+        document.getElementById('videoContainer').style.display = 'block';
+        document.getElementById('questionsContainer').style.display = 'none';
+        document.getElementById('videoMessage').innerHTML = '';
+        const video = document.getElementById('testVideo');
+        if (video) {
+            video.currentTime = 0;
+            video.load();
+        }
+    }
+    
+    function loadQuestions() {
+        userSelections = new Array(questionsData.length).fill(null);
+        let html = '';
+        for (let i = 0; i < questionsData.length; i++) {
+            html += `<div class="question-block"><div class="question-text">${i+1}. ${questionsData[i].text}</div>`;
+            for (let j = 0; j < questionsData[i].options.length; j++) {
+                html += `<div class="option" onclick="selectOption(${i}, ${j})" id="opt${i}_${j}">${questionsData[i].options[j]}</div>`;
+            }
+            html += `</div>`;
+        }
+        html += `<div style="text-align: center;"><button onclick="calculateResults()">УЗНАТЬ РЕЗУЛЬТАТ</button></div>`;
+        document.getElementById('questionsContainer').innerHTML = html;
+    }
+    
+    function selectOption(qIndex, optIndex) {
+        userSelections[qIndex] = optIndex;
+        for (let j = 0; j < questionsData[qIndex].options.length; j++) {
+            const opt = document.getElementById(`opt${qIndex}_${j}`);
+            if (opt) opt.classList.remove('selected');
+        }
+        const selected = document.getElementById(`opt${qIndex}_${optIndex}`);
+        if (selected) selected.classList.add('selected');
+    }
+    
+    function calculateResults() {
+        for (let i = 0; i < userSelections.length; i++) {
+            if (userSelections[i] === null) {
+                alert("Ответьте на все вопросы!");
+                return;
+            }
+        }
+        let correct = 0;
+        for (let i = 0; i < questionsData.length; i++) {
+            if (userSelections[i] === questionsData[i].correct) correct++;
+        }
+        let hasFalseMemory = (userSelections[3] === 0);
+        
+        let resultsHtml = `<h2>РЕЗУЛЬТАТЫ:</h2><div class="result-card"><div class="score">${correct} / ${questionsData.length}</div><p>правильных ответов</p></div>`;
+        if (hasFalseMemory) {
+            resultsHtml += `<div class="warning"><h3>ЛОЖНОЕ ВОСПОМИНАНИЕ!</h3><p>Вспомнили ли вы о том, чего не было?.</p></div>`;
+        } else {
+            resultsHtml += `<div class="success"><h3>ВЫ НЕ ПОДДАЛИСЬ!</h3><p>Большинство ответов верны.</p></div>`;
+        }
+        resultsHtml += `<div><h3>РАЗБОР</h3>`;
+        for (let i = 0; i < questionsData.length; i++) {
+            const isCorrect = (userSelections[i] === questionsData[i].correct);
+            const userAnswer = questionsData[i].options[userSelections[i]];
+            resultsHtml += `<div><strong>${i+1}.</strong> ${userAnswer} ${isCorrect ? '✅' : '❌'}</div>`;
+        }
+		
+        document.getElementById('resultsContainer').innerHTML = resultsHtml;
+        document.getElementById('expVideo').classList.add('hidden');
+        document.getElementById('expResult').classList.remove('hidden');
+    }
+    
+    function restartExperiment() {
+        document.getElementById('expResult').classList.add('hidden');
+        document.getElementById('expWelcome').classList.remove('hidden');
+    }
+    
+    function onVideoEnded() {
+        if (!videoWatched) {
+            videoWatched = true;
+            document.getElementById('videoContainer').style.display = 'none';
+            document.getElementById('questionsContainer').style.display = 'block';
+            loadQuestions();
+            document.getElementById('videoMessage').innerHTML = '<p style="color: #2ecc71;">Вспомните, не пересматривая видео, и ответьте на вопросы:</p>';
+        }
+    }
+    
+    // ========== ТРЕНАЖЕР ЦИФР ==========
+    let gameActive = false;
+    let currentNumber = [];
+    let currentLevel = 1;
+    let totalScore = 0;
+    let currentStreak = 0;
+    let timer = null;
+    
+    function startNumberGame() {
+        gameActive = true;
+        currentLevel = 1;
+        totalScore = 0;
+        currentStreak = 0;
+        updateStats();
+        nextRound();
+    }
+    
+    function nextRound() {
+        // Генерируем случайную последовательность цифр
+        currentNumber = [];
+        for (let i = 0; i < currentLevel; i++) {
+            currentNumber.push(Math.floor(Math.random() * 10));
+        }
+        
+        // Показываем цифры
+        showNumberSequence();
+    }
+    
+    function showNumberSequence() {
+        let html = `
+            <div class="number-display">
+                <div class="big-number" id="displayNumber"></div>
+            </div>
+            <p style="text-align: center;">Запомните последовательность...</p>
+        `;
+        document.getElementById('gameArea').innerHTML = html;
+        
+        let index = 0;
+        const displayDiv = document.getElementById('displayNumber');
+        
+        function showNextDigit() {
+            if (index < currentNumber.length) {
+                displayDiv.textContent = currentNumber[index];
+                index++;
+                setTimeout(showNextDigit, 800);
+            } else {
+                displayDiv.textContent = "?";
+                setTimeout(askUserInput, 300);
+            }
+        }
+        
+        showNextDigit();
+    }
+    
+    function askUserInput() {
+        let html = `
+            <p style="text-align: center;">Введите цифры в том же порядке:</p>
+            <div class="digit-input" id="digitInputs"></div>
+            <div style="text-align: center;">
+                <button onclick="checkAnswer()">ПРОВЕРИТЬ</button>
+            </div>
+        `;
+        document.getElementById('gameArea').innerHTML = html;
+        
+        const inputsDiv = document.getElementById('digitInputs');
+        for (let i = 0; i < currentLevel; i++) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.maxLength = 1;
+            input.style.width = '60px';
+            input.style.height = '60px';
+            input.style.textAlign = 'center';
+            input.style.fontSize = '1.5em';
+            input.style.background = 'rgba(255,255,255,0.2)';
+            input.style.border = '2px solid rgba(46, 204, 113, 0.5)';
+            input.style.borderRadius = '10px';
+            input.style.color = 'white';
+            input.style.fontWeight = 'bold';
+            input.onkeyup = function(e) {
+                if (e.target.value.length === 1) {
+                    if (i + 1 < currentLevel) {
+                        inputsDiv.children[i + 1].focus();
+                    }
+                }
+            };
+            inputsDiv.appendChild(input);
+        }
+        
+        // Автофокус на первое поле
+        setTimeout(() => {
+            if (inputsDiv.children[0]) inputsDiv.children[0].focus();
+        }, 100);
+    }
+    
+    function checkAnswer() {
+        const inputs = document.querySelectorAll('#digitInputs input');
+        let userAnswer = [];
+        let correct = true;
+        
+        for (let i = 0; i < inputs.length; i++) {
+            const val = parseInt(inputs[i].value);
+            if (isNaN(val) || val !== currentNumber[i]) {
+                correct = false;
+                break;
+            }
+        }
+        
+        if (correct) {
+            totalScore++;
+            currentStreak++;
+            let html = `
+                <div class="success">
+                    <h3>ПРАВИЛЬНО!</h3>
+                    <p>Вы запомнили ${currentLevel} цифр!</p>
+                </div>
+                <div style="text-align: center;">
+                    <button onclick="nextRound()">СЛЕДУЮЩИЙ УРОВЕНЬ</button>
+                </div>
+            `;
+            document.getElementById('gameArea').innerHTML = html;
+            currentLevel++;
+            updateStats();
+        } else {
+            currentStreak = 0;
+            let correctAnswer = currentNumber.join(' ');
+            let html = `
+                <div class="warning">
+                    <h3>НЕПРАВИЛЬНО!</h3>
+                    <p>Правильная последовательность: <strong>${correctAnswer}</strong></p>
+                    <p>Всего ${totalScore} очков.</p>
+                </div>
+                <div style="text-align: center;">
+                    <button onclick="startNumberGame()">НАЧАТЬ ЗАНОВО</button>
+                </div>
+            `;
+            document.getElementById('gameArea').innerHTML = html;
+            updateStats();
+            gameActive = false;
+        }
+    }
+    
+    function updateStats() {
+        document.getElementById('currentLevel').textContent = currentLevel;
+        document.getElementById('currentScore').textContent = totalScore;
+        document.getElementById('currentStreak').textContent = currentStreak;
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const video = document.getElementById('testVideo');
+        if (video) video.addEventListener('ended', onVideoEnded);
+    });
+</script>
+</body>
+</html>
