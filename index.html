@@ -434,7 +434,7 @@
         for (let i = 0; i < questionsData.length; i++) {
             const isCorrect = (userSelections[i] === questionsData[i].correct);
             const userAnswer = questionsData[i].options[userSelections[i]];
-            resultsHtml += `<div><strong>${i+1}.</strong> ${userAnswer} ${isCorrect ? '✅' : '❌'}</div>`;
+           resultsHtml += `<div style="color: #ffffff;"><strong style="color: #ffffff;">${i+1}.</strong> ${userAnswer} ${isCorrect ? '✅' : '❌'}</div>`;
         }
         resultsHtml += `</div>`;
         
