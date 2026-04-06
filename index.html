@@ -269,7 +269,6 @@
         <button class="tab-btn" onclick="switchTab('multiply')">ТАБЛИЦА УМНОЖЕНИЯ</button>
     </div>
     
-    <!-- Вкладка: ЭКСПЕРИМЕНТ -->
     <div id="experimentTab" class="tab-content active">
         <div id="expWelcome">
             <h1>MEMORY TRAP</h1>
@@ -307,7 +306,6 @@
         </div>
     </div>
     
-    <!-- Вкладка: ТРЕНАЖЕР ЦИФР -->
     <div id="numbersTab" class="tab-content">
         <h2>ТРЕНАЖЕР ПАМЯТИ</h2>
         <p>Запомните последовательность цифр и повторите ее в правильном порядке.</p>
@@ -325,7 +323,6 @@
         </div>
     </div>
     
-    <!-- Вкладка: ТАБЛИЦА УМНОЖЕНИЯ -->
     <div id="multiplyTab" class="tab-content">
         <h2>✖ТАБЛИЦА УМНОЖЕНИЯ</h2>
         <p>Тренируйте устный счет. Отвечайте на примеры!</p>
@@ -345,7 +342,7 @@
 </div>
 
 <script>
-    // ========== ЭКСПЕРИМЕНТ ==========
+    
     const questionsData = [
         { text: "Сзади был человек. Какого цвета на нем рубашка?", options: ["Белая", "Черная", "Бежевая", "Серая"], correct: 4 },
         { text: "Какого цвета был платок у женщины слева?", options: ["Белый", "Синий", "Черный", "Платка не было"], correct: 3 },
@@ -458,7 +455,6 @@
         }
     }
     
-    // ========== ТРЕНАЖЕР ЦИФР ==========
     let gameActive = false;
     let currentNumber = [];
     let currentLevel = 1;
@@ -551,7 +547,6 @@
         document.getElementById('currentStreak').textContent = currentStreak;
     }
     
-    // ========== ТАБЛИЦА УМНОЖЕНИЯ ==========
     let multCurrentQuestion = null;
     let multScore = 0;
     let multStreak = 0;
